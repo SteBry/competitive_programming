@@ -2,6 +2,9 @@
 #include <algorithm>
 #include <vector>
 #include "library.h"
+#include <cmath>
+#include <iostream>
+#include <iterator>
 
 /**
  * @author Stefan brynielsson
@@ -108,6 +111,65 @@ vector<int> knapsack::knapsack(int capacity, vector<Item> items)
             res.push_back(i - 1);
             max_w -= items[i - 1].weight;
         }
+    }
+
+    return res;
+}
+
+// Based on pseudo code from, contains some modifications: https://en.wikipedia.org/wiki/Longest_increasing_subsequence
+vector<int> longincsubseq::lis(vector<int> sequence)
+{
+    // predecessor_index[i] Stores the index of the predecessor
+    // of sequence[i] in the longest increasing index ending at sequence[i]
+    vector<int> predecessor_index(sequence.size());
+
+    // Stores the value index_of_sseq_with_len[i]=j such that sequence[k] is the smallest value where there is a increasing
+    // subsequence of length j ending at sequence[k]. This means that the last index of the longest
+    // increasing subsequence when the algorithm has finished will be index_of_sseq_with_len[longest].
+    vector<int> index_of_sseq_with_len(sequence.size() + 1);
+
+    // The length of the longest subseq found
+    int longest = 0;
+
+    // Process each value in the sequence and store the best subsequence found so far.
+    for (size_t i = 0; i < sequence.size(); i++)
+    {
+        int low = 1;
+        int high = longest;
+
+        // Binary search for the largest positive low ≤ longest
+        // such that sequence[index_of_sseq_with_len[low]] <= sequence[i]
+        while (low <= high)
+        {
+            int mid = ceil((low + high) / 2);
+            if (sequence[index_of_sseq_with_len[mid]] < sequence[i])
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+            }
+        }
+
+        // update values
+        predecessor_index[i] = index_of_sseq_with_len[low - 1];
+        index_of_sseq_with_len[low] = i;
+
+        if (low > longest)
+        {
+            longest = low;
+        }
+    }
+
+    // Backtrack and calculate result
+    vector<int> res(longest);
+    int k = index_of_sseq_with_len[longest];
+
+    for (int i = longest - 1; i >= 0; i--)
+    {
+        res[i] = k;
+        k = predecessor_index[k];
     }
 
     return res;

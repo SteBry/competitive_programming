@@ -62,7 +62,7 @@ namespace knapsack
     };
 
     /**
-     *  Kiven that the knapsack can contain a maximum capacity return the indices of the items 
+     *  Given that the knapsack can contain a maximum capacity return the indices of the items 
      *  in items that result in the highest value and fit into the knapsak
      * 
      * @param capacity the maximum weight the knapsack can contain
@@ -71,5 +71,20 @@ namespace knapsack
      **/
     std::vector<int> knapsack(int capacity, std::vector<Item> items);
 } // namespace knapsack
+
+namespace longincsubseq
+{
+
+    /**
+     * Given a sequence return the indices of the longest increasing sequence
+     * in the sequence
+     * 
+     * Time complexity: O(nlog(n))
+     * 
+     * @param sequence the maximum weight the knapsack can contain
+     * @return the indices of values that is part of the longest increasing sequence
+     **/
+    std::vector<int> lis(std::vector<int> sequence);
+} // namespace longincsubseq
 
 #endif /* MY_LIBRARY*/
