@@ -87,4 +87,42 @@ namespace longincsubseq
     std::vector<int> lis(std::vector<int> sequence);
 } // namespace longincsubseq
 
+namespace unionfind
+{
+    /**
+     * Represents a Disjoint set union
+     * implementation is based on: https://cp-algorithms.com/data_structures/disjoint_set_union.html
+     **/
+    struct DSU
+    {
+
+        /**
+         * Construct an Disjoint set union with the elements 0,...,nr_elements-1
+         * 
+         * @param nr_elements the amount of elements the DSU will contain
+         **/
+        DSU(int nr_elements);
+
+        /**
+         * Find the representative value of the set that contains v
+         * 
+         * @param v the value we want to find the representation of
+         * @return the value that represents the set that contains v 
+         **/
+        int find_set(int v);
+
+        /**
+         * Merge the set in which a and b is located
+         * 
+         * @param a a value in one of the sets to be merged
+         * @param b a value in one of the sets to be merged
+         **/
+        void union_set(int a, int b);
+
+    private:
+        std::vector<int> parent;
+        std::vector<int> size;
+    };
+} // namespace unionfind
+
 #endif /* MY_LIBRARY*/

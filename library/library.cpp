@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 #include <iterator>
+#include <numeric>
 
 /**
  * @author Stefan brynielsson
@@ -173,4 +174,40 @@ vector<int> longincsubseq::lis(vector<int> sequence)
     }
 
     return res;
+}
+
+unionfind::DSU::DSU(int nr_elements)
+{
+    parent = vector<int>(nr_elements);
+    size = vector<int>(nr_elements, 1);
+    iota(parent.begin(), parent.end(), 0);
+}
+
+int unionfind::DSU::find_set(int v)
+{
+    // Base case, root found
+    if (v == parent[v])
+    {
+        return v;
+    }
+
+    // Otherwise recursively search for representation, and compress path
+    return parent[v] = find_set(parent[v]);
+}
+
+void unionfind::DSU::union_set(int a, int b)
+{
+    a = find_set(a);
+    b = find_set(b);
+
+    // if a and b belongs to different trees, merge the trees
+    if (a != b)
+    {
+        if (size[a] < size[b])
+        {
+            swap(a, b);
+        }
+        parent[b] = a;
+        size[a] += size[b];
+    }
 }

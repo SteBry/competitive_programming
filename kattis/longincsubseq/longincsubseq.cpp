@@ -27,6 +27,7 @@ int main()
 
     int sequence_len{};
 
+    // While there are more test cases, solve it
     while (cin >> sequence_len)
     {
         // Read input
