@@ -125,4 +125,49 @@ namespace unionfind
     };
 } // namespace unionfind
 
+namespace fenwick
+{
+
+    class FenwickTree
+    {
+    private:
+        std::vector<long long> tree;
+        long long MaxIdx;
+
+    public:
+        /**
+         * Construct a Fenwick tree of length n with every value initialized to 0
+         * 
+         * @param n The size of the tree
+         **/
+        FenwickTree(long long n);
+
+        /**
+         * Construct a Fenwick tree of length n with values initialized to arr
+         * 
+         * It is assumed that n is the length of arr
+         * 
+         * @param arr array of inital values for eah element in the tree
+         * @param n The size of the tree
+         **/
+        FenwickTree(std::vector<long long> arr);
+
+        /**
+         * Calculates the cumulative sum of index 0...idx-1
+         * 
+         * @param n The size of the tree
+         **/
+        long long sum(long long idx);
+
+        /**
+         * Add the value delta to the value at index idx
+         * 
+         * @param idx The index to update
+         * @param delta the amount to chenge tthe value at index idx
+         **/
+        void add(long long idx, long long delta);
+    };
+
+} // namespace fenwick
+
 #endif /* MY_LIBRARY*/

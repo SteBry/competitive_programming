@@ -213,3 +213,37 @@ void unionfind::DSU::union_set(int a, int b)
             rank[a]++;
     }
 }
+
+fenwick::FenwickTree::FenwickTree(long long n)
+{
+    tree = vector<long long>(n + 1);
+    MaxIdx = n;
+}
+
+fenwick::FenwickTree::FenwickTree(vector<long long> arr) : FenwickTree(arr.size())
+{
+    for (long long i = 0; i < arr.size(); i++)
+        add(i, arr[i]);
+}
+
+long long fenwick::FenwickTree::sum(long long idx)
+{
+    idx += 1;
+    long long res = 0;
+    while (idx > 0)
+    {
+        res += tree[idx];
+        idx -= (idx & (-idx));
+    }
+    return res;
+}
+
+void fenwick::FenwickTree::add(long long idx, long long val)
+{
+    idx += 1;
+    while (idx <= MaxIdx)
+    {
+        tree[idx] += val;
+        idx += (idx & (-idx));
+    }
+}
