@@ -143,7 +143,7 @@ namespace fenwick
         FenwickTree(long long n);
 
         /**
-         * Construct a Fenwick tree of length n with values initialized to arr
+         * Construct a Fenwick tree of length n with values initialized to arr. 
          * 
          * It is assumed that n is the length of arr
          * 
@@ -153,14 +153,18 @@ namespace fenwick
         FenwickTree(std::vector<long long> arr);
 
         /**
-         * Calculates the cumulative sum of index 0...idx-1
+         * Calculates the cumulative sum of index 0...idx-1. 
+         *  
+         * Time complexity: O(nlog(n))
          * 
          * @param n The size of the tree
          **/
         long long sum(long long idx);
 
         /**
-         * Add the value delta to the value at index idx
+         * Add the value delta to the value at index idx. 
+         *  
+         * Time complexity: O(nlog(n))
          * 
          * @param idx The index to update
          * @param delta the amount to chenge tthe value at index idx
