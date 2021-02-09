@@ -21,7 +21,7 @@ using namespace std;
  * Then the specifivation for each operation is read and applied to the sets and 
  * the ouput (if applicable) is printed
  * 
- * The operations are applyed on and handeld by the struct "DSU" (Disjoint Set Union)
+ * The operations are applied on and handled by the struct "DSU" (Disjoint Set Union)
  * 
  **/
 int main()
@@ -51,7 +51,7 @@ int main()
         }
         else if (operation == '?')
         {
-            cout << (dsu.find_set(elem1) == dsu.find_set(elem2) ? "yes" : "no") << endl;
+            cout << (dsu.find_set(elem1) == dsu.find_set(elem2) ? "yes" : "no") << "\n";
         }
     }
 

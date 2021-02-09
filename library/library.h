@@ -121,7 +121,7 @@ namespace unionfind
 
     private:
         std::vector<int> parent;
-        std::vector<int> size;
+        std::vector<int> rank;
     };
 } // namespace unionfind
 

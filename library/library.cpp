@@ -179,7 +179,7 @@ vector<int> longincsubseq::lis(vector<int> sequence)
 unionfind::DSU::DSU(int nr_elements)
 {
     parent = vector<int>(nr_elements);
-    size = vector<int>(nr_elements, 1);
+    rank = vector<int>(nr_elements);
     iota(parent.begin(), parent.end(), 0);
 }
 
@@ -192,7 +192,8 @@ int unionfind::DSU::find_set(int v)
     }
 
     // Otherwise recursively search for representation, and compress path
-    return parent[v] = find_set(parent[v]);
+    parent[v] = find_set(parent[v]);
+    return parent[v];
 }
 
 void unionfind::DSU::union_set(int a, int b)
@@ -203,11 +204,12 @@ void unionfind::DSU::union_set(int a, int b)
     // if a and b belongs to different trees, merge the trees
     if (a != b)
     {
-        if (size[a] < size[b])
+        if (rank[a] < rank[b])
         {
             swap(a, b);
         }
         parent[b] = a;
-        size[a] += size[b];
+        if (rank[a] == rank[b])
+            rank[a]++;
     }
 }
