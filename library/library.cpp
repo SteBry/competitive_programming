@@ -21,7 +21,7 @@ bool intervalcover::Interval::operator<(const Interval &other) const
 
 intervalcover::Interval::Interval(double start, double end, int index) : start{start}, end{end}, index{index} {}
 
-intervalcover::Interval::Interval() {}
+intervalcover::Interval::Interval() : Interval{0, 0, -1} {}
 
 vector<int> intervalcover::cover(Interval interval, vector<Interval> &intervals)
 {
@@ -52,7 +52,7 @@ vector<int> intervalcover::cover(Interval interval, vector<Interval> &intervals)
         {
             if (it->end >= current)
             {
-                if (it->end - current > best.end - current)
+                if (it->end - current > best.end - current || !updated)
                 {
                     updated = true;
                     best = *it;
@@ -60,7 +60,9 @@ vector<int> intervalcover::cover(Interval interval, vector<Interval> &intervals)
             }
         }
 
-        result.push_back(best.index);
+        if (updated)
+            result.push_back(best.index);
+
         current = best.end;
 
     } while (current < interval.end);
@@ -84,7 +86,7 @@ vector<int> knapsack::knapsack(int capacity, vector<Item> items)
             {
                 df[item_index][weight_index] = 0;
             }
-            // If the maximum weight for the earier item not reached, choos wheather or not to include the previus item in the knapsack
+            // If the maximum weight for the earier item not reached, choose wheather or not to include the previus item in the knapsack
             else if (items[item_index - 1].weight <= weight_index)
             {
                 int last_included = items[item_index - 1].value + df[item_index - 1][weight_index - items[item_index - 1].weight];

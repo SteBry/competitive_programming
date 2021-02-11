@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <iostream>
+#include <complex>
 
 #ifndef MY_LIBRARY
 #define MY_LIBRARY
