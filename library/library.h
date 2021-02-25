@@ -175,4 +175,47 @@ namespace fenwick
 
 } // namespace fenwick
 
+namespace shortestpath1
+{
+
+    /**
+     * A graph represented as a adjacency matrix
+     **/
+    struct Graph
+    {
+        std::vector<std::vector<std::pair<int, int>>> edges;
+
+        Graph(int nr_nodes) : edges(nr_nodes, std::vector<std::pair<int, int>>()){};
+
+        /**
+         * Add a directed edge between from -> to with the weight cost 
+         * 
+         * @param from The index of the node where the edge start
+         * @param to The index of the node where the edge end
+         * @param cost The cost of traversing the edge
+         **/
+        void set_weight(int from, int to, int cost);
+    };
+
+    /**
+     * Find the parrent of the shortest path to node i from start node using dijkstras algorithm.
+     * based on https://cp-algorithms.com/graph/dijkstra.html
+     * 
+     * @param graph the graph
+     * @param start_node the index the search start at
+     * @return a vector of pairs with the cost and parent to each node 
+     **/
+    std::vector<std::pair<int, int>> shortest_path(Graph &graph, int start_node);
+
+    /**
+     * Find the parrent of the shortest path to node i from start node using dijkstras algorithm for sparse graphs.
+     * based on https://cp-algorithms.com/graph/dijkstra_sparse.html
+     * 
+     * @param graph the graph
+     * @param start_node the index the search start at
+     * @return a vector of pairs with the cost and parent to each node 
+     **/
+    std::vector<std::pair<int, int>> sparse_shortest_path(Graph &graph, int start_node);
+}
+
 #endif /* MY_LIBRARY*/

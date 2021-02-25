@@ -6,6 +6,8 @@
 #include <iostream>
 #include <iterator>
 #include <numeric>
+#include <limits.h>
+#include <queue>
 
 /**
  * @author Stefan brynielsson
@@ -248,4 +250,108 @@ void fenwick::FenwickTree::add(long long idx, long long val)
         tree[idx] += val;
         idx += (idx & (-idx));
     }
+}
+
+void shortestpath1::Graph::set_weight(int from, int to, int cost)
+{
+    edges[from].push_back(make_pair(to, cost));
+}
+
+vector<pair<int, int>> shortestpath1::shortest_path(Graph &graph, int start_node)
+{
+    int graph_size = graph.edges.size();
+
+    // The output array, each index will contain the distance to it and the parent node on the shortest path
+    // A node that do not have any path will have the parent -1, the start node will have itself as parent
+    vector<pair<int, int>> dist_parent = vector<pair<int, int>>(graph_size, make_pair(INT_MAX, -1));
+
+    // explored[i] will be true if node i has been explored
+    vector<bool> explored(graph_size, false);
+
+    // Distance of source vertex from itself is always 0 and the parrent is itself
+    dist_parent[start_node].first = 0;
+    dist_parent[start_node].second = start_node;
+
+    // Find shortest path for all nodes
+    for (int count = 0; count < graph_size - 1; count++)
+    {
+        // Find the node closest to start_node not yet explored
+        int min{INT_MAX}, min_index;
+        int u;
+
+        for (int v = 0; v < graph_size; v++)
+        {
+            if (explored[v] == false && dist_parent[v].first <= min)
+            {
+                min = dist_parent[v].first,
+                u = v;
+            }
+        }
+
+        // Exit if an unreachable node is being processed
+        if (dist_parent[u].first == INT_MAX)
+            break;
+
+        // Mark the found node as explored
+        explored[u] = true;
+
+        // Update distance and parrent of the neighbours of the picked node if a new shortest path is found.
+        for (pair<int, int> edge : graph.edges[u])
+        {
+            if (dist_parent[u].first + edge.second < dist_parent[edge.first].first)
+            {
+                dist_parent[edge.first].first = dist_parent[u].first + edge.second;
+                dist_parent[edge.first].second = u;
+            }
+        }
+    }
+
+    return dist_parent;
+}
+
+std::vector<std::pair<int, int>> shortestpath1::sparse_shortest_path(Graph &graph, int start_node)
+{
+    int graph_size = graph.edges.size();
+
+    // The output array, each index will contain the distance to it and the parent node on the shortest path
+    // A node that do not have any path will have the parent -1, the start node will have itself as parent
+    vector<pair<int, int>> dist_parent = vector<pair<int, int>>(graph_size, make_pair(INT_MAX, -1));
+
+    // Distance of source vertex from itself is always 0 and the parrent is itself
+    dist_parent[start_node].first = 0;
+    dist_parent[start_node].second = start_node;
+
+    using pii = pair<int, int>;
+
+    // unexplored edges
+    priority_queue<pii, vector<pii>, greater<pii>> q;
+    q.push({0, start_node});
+
+    // While there are more unexplored nodes that is reachable from the start node
+    while (!q.empty())
+    {
+
+        // Retrieve the best node
+        int v = q.top().second;
+        int d_v = q.top().first;
+        q.pop();
+
+        if (d_v != dist_parent[v].first)
+            continue;
+
+        // Explore neighbouring edges
+        for (pair<int, int> edge : graph.edges[v])
+        {
+            int to = edge.first;
+            int len = edge.second;
+
+            if (dist_parent[v].first + len < dist_parent[to].first)
+            {
+                dist_parent[to].first = dist_parent[v].first + len;
+                dist_parent[to].second = v;
+                q.push({dist_parent[to].first, to});
+            }
+        }
+    }
+    return dist_parent;
 }
