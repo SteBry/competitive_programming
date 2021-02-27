@@ -355,3 +355,84 @@ std::vector<std::pair<int, int>> shortestpath1::sparse_shortest_path(Graph &grap
     }
     return dist_parent;
 }
+
+void shortestpath2::Graph::set_weight(int from, int to, int cost, int start_time, int period)
+{
+    PeriodicEdge p;
+    p.cost = cost;
+    p.start_time = start_time;
+    p.period = period;
+    edges[from].push_back(make_pair(to, p));
+}
+
+vector<pair<int, int>> shortestpath2::shortest_path(Graph &graph, int start_node)
+{
+    int graph_size = graph.edges.size();
+
+    // The output array, each index will contain the distance to it and the parent node on the shortest path
+    // A node that do not have any path will have the parent -1, the start node will have itself as parent
+    vector<pair<int, int>> dist_parent = vector<pair<int, int>>(graph_size, make_pair(INT_MAX, -1));
+
+    // explored[i] will be true if node i has been explored
+    vector<bool> explored(graph_size, false);
+
+    // Distance of source vertex from itself is always 0 and the parrent is itself
+    dist_parent[start_node].first = 0;
+    dist_parent[start_node].second = start_node;
+
+    // Find shortest path for all nodes
+    for (int count = 0; count < graph_size - 1; count++)
+    {
+        // Find the node closest to start_node not yet explored
+        int min{INT_MAX}, min_index;
+        int u;
+
+        for (int v = 0; v < graph_size; v++)
+        {
+            if (explored[v] == false && dist_parent[v].first <= min)
+            {
+                min = dist_parent[v].first,
+                u = v;
+            }
+        }
+
+        // Exit if an unreachable node is being processed
+        if (dist_parent[u].first == INT_MAX)
+            break;
+
+        // Mark the found node as explored
+        explored[u] = true;
+
+        // Update distance and parrent of the neighbours of the picked node if a new shortest path is found.
+        for (pair<int, PeriodicEdge> parent_edge : graph.edges[u])
+        {
+            int current_cost = dist_parent[u].first;
+
+            // If edge is not traversable;
+            if (parent_edge.second.cost == -1 || parent_edge.second.next_period_time(current_cost) == -1)
+                continue;
+
+            if (parent_edge.second.next_period_time(current_cost) + parent_edge.second.cost < dist_parent[parent_edge.first].first)
+            {
+                dist_parent[parent_edge.first].first = parent_edge.second.next_period_time(current_cost) + parent_edge.second.cost;
+                dist_parent[parent_edge.first].second = u;
+            }
+        }
+    }
+
+    return dist_parent;
+}
+
+int shortestpath2::PeriodicEdge::next_period_time(int time)
+{
+    if (time <= start_time)
+    {
+        return start_time;
+    }
+
+    if (period == 0)
+    {
+        return -1;
+    }
+    return start_time + ceil(((double)(time - start_time) / period)) * period;
+}

@@ -218,4 +218,50 @@ namespace shortestpath1
     std::vector<std::pair<int, int>> sparse_shortest_path(Graph &graph, int start_node);
 }
 
+namespace shortestpath2
+{
+    struct PeriodicEdge
+    {
+        // Note , cost==-1 means that the edge is not traversable
+        int start_time{0}, period{0}, cost{-1};
+
+        /**
+         * Given a timepoint return the next timepoint the edge is usable (-1 if none exists)
+         * @param time the timepoint
+         **/
+        int next_period_time(int time);
+    };
+
+    /**
+     * A graph represented as a adjacency matrix, the edges are only usable during certain time intervals
+     **/
+    struct Graph
+    {
+        std::vector<std::vector<std::pair<int, PeriodicEdge>>> edges;
+
+        Graph(int nr_nodes) : edges(nr_nodes, std::vector<std::pair<int, PeriodicEdge>>()){};
+
+        /**
+         * Add a directed edge between "from" -> "to" with a cost, a time is start being usable and the periods it is usable 
+         * 
+         * @param from The index of the node where the edge start
+         * @param to The index of the node where the edge end
+         * @param cost The cost of traversing the edge
+         * @param start_time The first timepoint the edge is usable
+         * @param period The interval between each useable timepoint
+         **/
+        void set_weight(int from, int to, int cost, int start_time, int period);
+    };
+
+    /**
+     * Find the parrent of the shortest path to node i from start node using dijkstras algorithm.
+     * based on https://cp-algorithms.com/graph/dijkstra.html
+     * 
+     * @param graph the graph
+     * @param start_node the index the search start at
+     * @return a vector of pairs with the cost and parent to each node 
+     **/
+    std::vector<std::pair<int, int>> shortest_path(Graph &graph, int start_node);
+}
+
 #endif /* MY_LIBRARY*/
