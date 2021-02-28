@@ -501,3 +501,47 @@ vector<pair<int, int>> shortestpath3::shortest_path(shortestpath1::Graph &graph,
 
     return dist_parent;
 }
+
+vector<vector<long long>> allpairspath::shortest_path(shortestpath1::Graph &graph)
+{
+
+    vector<vector<long long>> distances(graph.edges.size(), vector<long long>(graph.edges.size(), LONG_LONG_MAX));
+
+    // Init distances based on graph
+    for (int i = 0; i < graph.edges.size(); i++)
+    {
+        for (pair<int, int> edge : graph.edges[i])
+        {
+            distances[i][edge.first] = min((long long)edge.second, distances[i][edge.first]);
+        }
+        distances[i][i] = min((long long)0, distances[i][i]);
+    }
+
+    // update distances
+    for (int k = 0; k < distances.size(); ++k)
+    {
+        for (int i = 0; i < distances.size(); ++i)
+        {
+            for (int j = 0; j < distances.size(); ++j)
+            {
+                if (distances[i][k] < LONG_LONG_MAX && distances[k][j] < LONG_LONG_MAX)
+                    distances[i][j] = min(distances[i][j], distances[i][k] + distances[k][j]);
+            }
+        }
+    }
+
+    // Find negative cycles
+    for (int i = 0; i < distances.size(); ++i)
+    {
+        for (int j = 0; j < distances.size(); ++j)
+        {
+            for (int t = 0; t < distances.size(); ++t)
+            {
+                if (distances[i][t] < LONG_LONG_MAX && distances[t][t] < 0 && distances[t][j] < LONG_LONG_MAX)
+                    distances[i][j] = LONG_LONG_MIN;
+            }
+        }
+    }
+
+    return distances;
+}

@@ -269,6 +269,22 @@ namespace shortestpath3
      * Find the parrent of the shortest path to node i from start node, handles negative edges
      *  Based on: 
      * https://cp-algorithms.com/graph/bellman_ford.html
+     * https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/
+     * 
+     * 
+     * @param graph the graph
+     * @return a 2d vector[i][j] with the distance between node i, j
+     **/
+    std::vector<std::pair<int, int>> shortest_path(shortestpath1::Graph &graph, int start_node);
+}
+
+namespace allpairspath
+
+{
+    /**
+     * Find the shortest distance between all pairs of nodes in agraph
+     * Based on:
+     * https://cp-algorithms.com/graph/all-pair-shortest-path-floyd-warshall.html
      * https://www.geeksforgeeks.org/bellman-ford-algorithm-dp-23/ 
      * 
      * 
@@ -276,7 +292,7 @@ namespace shortestpath3
      * @param start_node the index the search start at
      * @return a vector of pairs with the cost and parent to each node 
      **/
-    std::vector<std::pair<int, int>> shortest_path(shortestpath1::Graph &graph, int start_node);
+    std::vector<std::vector<long long>> shortest_path(shortestpath1::Graph &graph);
 }
 
 #endif /* MY_LIBRARY*/
