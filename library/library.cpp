@@ -436,3 +436,68 @@ int shortestpath2::PeriodicEdge::next_period_time(int time)
     }
     return start_time + ceil(((double)(time - start_time) / period)) * period;
 }
+
+vector<pair<int, int>> shortestpath3::shortest_path(shortestpath1::Graph &graph, int start_node)
+{
+    int graph_size = graph.edges.size();
+
+    // The output array, each index will contain the distance to it and the parent node on the shortest path
+    // A node that do not have any path will have the parent -1, the start node will have itself as parent
+    vector<pair<int, int>> dist_parent = vector<pair<int, int>>(graph_size, make_pair(INT_MAX, -1));
+
+    // Distance of source vertex from itself is always 0 and the parrent is itself
+    dist_parent[start_node].first = 0;
+    dist_parent[start_node].second = start_node;
+
+    int x;
+
+    // Find shortest distance to each node
+    for (int i = 0; i < graph_size; ++i)
+    {
+        //Loop over all edges
+        for (int j = 0; j < graph_size; j++)
+        {
+            for (pair<int, int> edge : graph.edges[j])
+            {
+                int src = j;
+                int dest = edge.first;
+                int weight = edge.second;
+
+                if (dist_parent[j].first < INT_MAX && dist_parent[dest].first > dist_parent[src].first + weight)
+                {
+                    dist_parent[edge.first].first = max(INT_MIN, dist_parent[j].first + edge.second);
+                    dist_parent[edge.first].second = j;
+                }
+            }
+        }
+    }
+
+    //Loop over all edges graph_size times inorder to calculate all infinite costs
+    for (int a = 0; a < graph_size; a++)
+    {
+        // Loop over edges
+        for (int j = 0; j < graph_size; j++)
+        {
+            for (pair<int, int> edge : graph.edges[j])
+            {
+                int src = j;
+                int dest = edge.first;
+                int weight = edge.second;
+
+                // All neightbours also have a infinite negative cost if src have it
+                if (dist_parent[src].first == INT_MIN)
+                {
+                    dist_parent[dest].first = INT_MIN;
+                }
+
+                // If a lower cost is found, there is a negative loop
+                else if (dist_parent[src].first != INT_MAX && dist_parent[src].first + weight < dist_parent[dest].first)
+                {
+                    dist_parent[dest].first = INT_MIN;
+                }
+            }
+        }
+    }
+
+    return dist_parent;
+}

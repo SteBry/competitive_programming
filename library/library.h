@@ -264,4 +264,19 @@ namespace shortestpath2
     std::vector<std::pair<int, int>> shortest_path(Graph &graph, int start_node);
 }
 
+namespace shortestpath3
+{ /**
+     * Find the parrent of the shortest path to node i from start node, handles negative edges
+     *  Based on: 
+     * https://cp-algorithms.com/graph/bellman_ford.html
+     * https://www.geeksforgeeks.org/bellman-ford-algorithm-dp-23/ 
+     * 
+     * 
+     * @param graph the graph
+     * @param start_node the index the search start at
+     * @return a vector of pairs with the cost and parent to each node 
+     **/
+    std::vector<std::pair<int, int>> shortest_path(shortestpath1::Graph &graph, int start_node);
+}
+
 #endif /* MY_LIBRARY*/
