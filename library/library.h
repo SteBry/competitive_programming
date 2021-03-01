@@ -295,4 +295,27 @@ namespace allpairspath
     std::vector<std::vector<long long>> shortest_path(shortestpath1::Graph &graph);
 }
 
+namespace minspantree
+{
+    struct Edge
+    {
+        int u, v, weight;
+        bool operator<(Edge const &other)
+        {
+            return weight < other.weight;
+        }
+    };
+
+    /**
+     * Find the minimum spanning tree of a graph given as a list of edges
+     * Based on:
+     * https://cp-algorithms.com/graph/mst_kruskal_with_dsu.html 
+     * 
+     * @param edges the edges in the graph
+     * @param nr_nodes the number of nodes in the graph
+     * @return the edges that is part of the mst, will have size=nr_nodes-1 if there was a mst found.
+     **/
+    std::vector<Edge> mst(std::vector<Edge> &edges, int nr_node);
+}
+
 #endif /* MY_LIBRARY*/

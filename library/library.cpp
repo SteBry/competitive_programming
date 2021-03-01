@@ -545,3 +545,32 @@ vector<vector<long long>> allpairspath::shortest_path(shortestpath1::Graph &grap
 
     return distances;
 }
+
+vector<minspantree::Edge> minspantree::mst(vector<minspantree::Edge> &edges, int nr_nodes)
+{
+
+    unionfind::DSU dsu(nr_nodes);
+    vector<Edge> result;
+
+    sort(edges.begin(), edges.end());
+
+    for (Edge e : edges)
+    {
+        if (dsu.find_set(e.u) != dsu.find_set(e.v))
+        {
+            result.push_back(e);
+            dsu.union_set(e.u, e.v);
+        }
+    }
+
+    // Sort result in lexicographically order
+    sort(result.begin(), result.end(), [](minspantree::Edge lhs, minspantree::Edge rhs) {
+        if (lhs.u == rhs.u)
+        {
+            return lhs.v < rhs.v;
+        }
+        return lhs.u < rhs.u;
+    });
+
+    return result;
+}
