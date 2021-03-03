@@ -345,4 +345,31 @@ namespace maxflow
      **/
     std::vector<std::vector<int>> max_flow(std::vector<std::vector<int>> graph, std::vector<std::vector<int>> &adj, int s, int t);
 }
+
+namespace mincut
+{
+    /**
+     * Calculate the nodes reachable from node s in the graph, result is stored in visited
+     * Based on:
+     * https://www.geeksforgeeks.org/minimum-cut-in-a-directed-graph/
+     * 
+     * @param r_graph the graph to search through, r_graph[i][j] contains the capacity of the edge between node i and j
+     * @param s
+     * @param visited the result vector result[i] is true if i is reachable from the starting node
+     **/
+    void dfs(std::vector<std::vector<int>> &r_graph, int s, std::vector<bool> &visited);
+
+    /**
+     * Calculate the minimum cut in a graph
+     * Based on:
+     * https://www.geeksforgeeks.org/minimum-cut-in-a-directed-graph/
+     * 
+     * @param graph the graph to search through graph[i][j] contains the capacity of the edge between node i and j
+     * @param adj adj[i] contains the indexes of all the nodes node i is connected to, this is used to avoid looping over the whole graph
+     * @param start the index to search from
+     * @param goal the goal index
+     * @return The nodes reachable from s without passing through the minimum cut
+     **/
+    std::vector<int> min_cut(std::vector<std::vector<int>> &graph, std::vector<std::vector<int>> &adj, int s, int t);
+}
 #endif /* MY_LIBRARY*/

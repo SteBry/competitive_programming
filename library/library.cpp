@@ -639,3 +639,32 @@ vector<vector<int>> maxflow::max_flow(vector<vector<int>> graph, vector<vector<i
     // Return the overall flow
     return graph;
 }
+
+void mincut::dfs(vector<vector<int>> &r_graph, int s, vector<bool> &visited)
+{
+    visited[s] = true;
+    for (int i = 0; i < r_graph.size(); i++)
+        if (r_graph[s][i] && !visited[i])
+            dfs(r_graph, i, visited);
+}
+
+vector<int> mincut::min_cut(vector<vector<int>> &graph, vector<vector<int>> &adj, int s, int t)
+{
+
+    vector<vector<int>> r_graph = maxflow::max_flow(graph, adj, s, t);
+
+    vector<bool> visited(graph.size(), false);
+
+    dfs(r_graph, s, visited);
+
+    vector<int> res;
+    for (size_t i = 0; i < graph.size(); i++)
+    {
+        if (visited[i])
+        {
+            res.push_back(i);
+        }
+    }
+
+    return res;
+}
