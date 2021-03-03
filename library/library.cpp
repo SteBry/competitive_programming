@@ -574,3 +574,68 @@ vector<minspantree::Edge> minspantree::mst(vector<minspantree::Edge> &edges, int
 
     return result;
 }
+
+std::vector<int> maxflow::bfs(vector<vector<int>> &r_graph, vector<vector<int>> &adj, int start, int goal)
+{
+    vector<bool> visited(r_graph.size(), false);
+    vector<int> parent(r_graph.size(), -1);
+
+    // Create a queue, enqueue source vertex and mark start vertex as visited
+    queue<int> q;
+    q.push(start);
+    visited[start] = true;
+
+    // Standard BFS Loop
+    while (!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+
+        for (int v : adj[u])
+        {
+            if (visited[v] == false && r_graph[u][v] > 0)
+            {
+                q.push(v);
+                parent[v] = u;
+                visited[v] = true;
+            }
+        }
+    }
+
+    // If we reached goal in BFS starting from source, then return parent else return a empty vector
+    return (visited[goal] == true) ? parent : vector<int>();
+}
+
+vector<vector<int>> maxflow::max_flow(vector<vector<int>> graph, vector<vector<int>> &adj, int s, int t)
+{
+
+    int u, v;
+    int nr_nodes = graph.size();
+
+    // While thera are a path with available capacity
+    vector<int> parent = bfs(graph, adj, s, t);
+
+    while (parent.size() != 0)
+    {
+        // Find the most restricive part of the found path
+        int path_flow = INT_MAX;
+        for (v = t; v != s; v = parent[v])
+        {
+            u = parent[v];
+            path_flow = min(path_flow, graph[u][v]);
+        }
+
+        // Update residual graph based on the most restrictive part
+        for (v = t; v != s; v = parent[v])
+        {
+            u = parent[v];
+            graph[u][v] -= path_flow;
+            graph[v][u] += path_flow;
+        }
+
+        parent = bfs(graph, adj, s, t);
+    }
+
+    // Return the overall flow
+    return graph;
+}

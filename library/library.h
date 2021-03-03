@@ -318,4 +318,31 @@ namespace minspantree
     std::vector<Edge> mst(std::vector<Edge> &edges, int nr_node);
 }
 
+namespace maxflow
+{
+    /**
+     * Find a path in the graph from start to goal with capacity left
+     * 
+     * @param r_graph the residual capacity of the edges in the graph
+     * @param adj adj[i] contains the indexes of all the numbers node is connected to, this is used to avoid looping ver the whole r_graph
+     * @param start the index to search from
+     * @param goal the goal index
+     * @return a list of the parent each node if there exists an path from target to source, else an empty vector 
+     **/
+    std::vector<int> bfs(std::vector<std::vector<int>> &r_graph, std::vector<std::vector<int>> &adj, int start, int goal);
+
+    /**
+     * Calculate the Maxflow in a graph
+     * Based on:
+     * https://cp-algorithms.com/graph/edmonds_karp.html
+     * https://www.geeksforgeeks.org/ford-fulkerson-algorithm-for-maximum-flow-problem/
+     * 
+     * @param graph the graph to search through graph[i][j] contains the capacity of the edge between node i and j
+     * @param adj adj[i] contains the indexes of all the nodes node i is connected to, this is used to avoid looping ver the whole graph
+     * @param start the index to search from
+     * @param goal the goal index
+     * @return The residual graph when the graphs flow has been maximized
+     **/
+    std::vector<std::vector<int>> max_flow(std::vector<std::vector<int>> graph, std::vector<std::vector<int>> &adj, int s, int t);
+}
 #endif /* MY_LIBRARY*/
