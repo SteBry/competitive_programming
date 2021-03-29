@@ -19,12 +19,12 @@ namespace intervalcover
      **/
     struct Interval
     {
-        double start{};
-        double end{};
+        long double start{};
+        long double end{};
         int index{};
 
         // Counstruct a interval
-        Interval(double start, double end, int index);
+        Interval(long double start, long double end, int index);
         Interval();
 
         // Comparator, compares the start of Intervals

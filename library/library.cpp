@@ -21,14 +21,14 @@ bool intervalcover::Interval::operator<(const Interval &other) const
     return start < other.start;
 }
 
-intervalcover::Interval::Interval(double start, double end, int index) : start{start}, end{end}, index{index} {}
+intervalcover::Interval::Interval(long double start, long double end, int index) : start{start}, end{end}, index{index} {}
 
 intervalcover::Interval::Interval() : Interval{0, 0, -1} {}
 
 vector<int> intervalcover::cover(Interval interval, vector<Interval> &intervals)
 {
     vector<int> result{};
-    double current = interval.start;
+    long double current = interval.start;
     Interval best{};
 
     sort(intervals.begin(), intervals.end());
