@@ -372,4 +372,92 @@ namespace mincut
      **/
     std::vector<int> min_cut(std::vector<std::vector<int>> &graph, std::vector<std::vector<int>> &adj, int s, int t);
 }
+
+namespace stringmatching
+{
+
+    /**
+     * Find all substrings of text that match the string pattern using Knuth-Morris-Pratt-algorithm
+     * Based on Slides describing the Knuth-Morris-Pratt algorithm by Mayank Agarwal and Nitesh Maan:
+     * http://ranger.uta.edu/~gdas/Courses/Fall2004/advAlgos/student_slides/W9Presentation.ppt 
+     * 
+     * @param pattern The string to find
+     * @param text The string to search in
+     * @return The indexes where the found substrings start.
+     **/
+    std::vector<int> find(std::string pattern, std::string text);
+
+    /**
+     * Computes the prefix funtion function used in the Knuth-Morris-Pratt-algorithm
+     * 
+     * Based on Slides describing the Knuth-Morris-Pratt algorithm by Mayank Agarwal and Nitesh Maan:
+     * http://ranger.uta.edu/~gdas/Courses/Fall2004/advAlgos/student_slides/W9Presentation.ppt 
+     * 
+     * @param pattern The string to find
+     * @param text The string to search in
+     * @return The indexes where the found substrings start.
+     **/
+    std::vector<int> compute_prefix(std::string pattern);
+}
+
+namespace rationalarithmetic
+{
+    /**
+    * Find the greates common denominator of a and b using th Euclidean algorithm
+    * https://en.wikipedia.org/wiki/Euclidean_algorithm
+    * 
+    * @param a The first number
+    * @param b The second number
+    * @return The greates common denominator of a and b
+    **/
+    long gcd(long long a, long long b);
+
+    struct RationalNumber
+    {
+        // The numerator of the number
+        long long x;
+        // The denominator of the number
+        long long y;
+
+        /**
+        * Construct a rational number 
+        * 
+        * @param x The numerator of the number
+        * @param y The denominator of the number
+        **/
+        RationalNumber(long long x, long long y) : x{x}, y{y}
+        {
+            reduce();
+        };
+
+        /**
+        * Default constructor
+        **/
+        RationalNumber() : x{1}, y{1} {};
+
+        // Arithmetic operators
+        RationalNumber operator+(RationalNumber const &other);
+        RationalNumber operator-(RationalNumber const &other);
+        RationalNumber operator*(RationalNumber const &other);
+        RationalNumber operator/(RationalNumber const &other);
+
+        // Comparison operators
+        bool operator<(RationalNumber const &other);
+        bool operator>(RationalNumber const &other);
+        bool operator<=(RationalNumber const &other);
+        bool operator>=(RationalNumber const &other);
+        bool operator==(RationalNumber const &other);
+        bool operator!=(RationalNumber const &other);
+
+        // In and output operators
+        friend std::ostream &operator<<(std::ostream &output, const RationalNumber &num);
+        friend std::istream &operator>>(std::istream &input, RationalNumber &num);
+
+    private:
+        // Reduce the number to its shortest terms
+        void reduce();
+    };
+
+}
+
 #endif /* MY_LIBRARY*/

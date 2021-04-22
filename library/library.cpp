@@ -18,6 +18,9 @@ using namespace std;
 
 bool intervalcover::Interval::operator<(const Interval &other) const
 {
+    if (start == other.start)
+        return end < other.end;
+
     return start < other.start;
 }
 
@@ -226,7 +229,7 @@ fenwick::FenwickTree::FenwickTree(long long n)
 
 fenwick::FenwickTree::FenwickTree(vector<long long> arr) : FenwickTree(arr.size())
 {
-    for (long long i = 0; i < arr.size(); i++)
+    for (long long i = 0; i < (long long)arr.size(); i++)
         add(i, arr[i]);
 }
 
@@ -276,8 +279,8 @@ vector<pair<int, int>> shortestpath1::shortest_path(Graph &graph, int start_node
     for (int count = 0; count < graph_size - 1; count++)
     {
         // Find the node closest to start_node not yet explored
-        int min{INT_MAX}, min_index;
-        int u;
+        int min{INT_MAX};
+        int u = 0;
 
         for (int v = 0; v < graph_size; v++)
         {
@@ -384,8 +387,8 @@ vector<pair<int, int>> shortestpath2::shortest_path(Graph &graph, int start_node
     for (int count = 0; count < graph_size - 1; count++)
     {
         // Find the node closest to start_node not yet explored
-        int min{INT_MAX}, min_index;
-        int u;
+        int min{INT_MAX};
+        int u = 0;
 
         for (int v = 0; v < graph_size; v++)
         {
@@ -449,8 +452,6 @@ vector<pair<int, int>> shortestpath3::shortest_path(shortestpath1::Graph &graph,
     dist_parent[start_node].first = 0;
     dist_parent[start_node].second = start_node;
 
-    int x;
-
     // Find shortest distance to each node
     for (int i = 0; i < graph_size; ++i)
     {
@@ -508,7 +509,7 @@ vector<vector<long long>> allpairspath::shortest_path(shortestpath1::Graph &grap
     vector<vector<long long>> distances(graph.edges.size(), vector<long long>(graph.edges.size(), LONG_LONG_MAX));
 
     // Init distances based on graph
-    for (int i = 0; i < graph.edges.size(); i++)
+    for (int i = 0; i < (int)graph.edges.size(); i++)
     {
         for (pair<int, int> edge : graph.edges[i])
         {
@@ -518,11 +519,11 @@ vector<vector<long long>> allpairspath::shortest_path(shortestpath1::Graph &grap
     }
 
     // update distances
-    for (int k = 0; k < distances.size(); ++k)
+    for (int k = 0; k < (int)distances.size(); ++k)
     {
-        for (int i = 0; i < distances.size(); ++i)
+        for (int i = 0; i < (int)distances.size(); ++i)
         {
-            for (int j = 0; j < distances.size(); ++j)
+            for (int j = 0; j < (int)distances.size(); ++j)
             {
                 if (distances[i][k] < LONG_LONG_MAX && distances[k][j] < LONG_LONG_MAX)
                     distances[i][j] = min(distances[i][j], distances[i][k] + distances[k][j]);
@@ -531,11 +532,11 @@ vector<vector<long long>> allpairspath::shortest_path(shortestpath1::Graph &grap
     }
 
     // Find negative cycles
-    for (int i = 0; i < distances.size(); ++i)
+    for (int i = 0; i < (int)distances.size(); ++i)
     {
-        for (int j = 0; j < distances.size(); ++j)
+        for (int j = 0; j < (int)distances.size(); ++j)
         {
-            for (int t = 0; t < distances.size(); ++t)
+            for (int t = 0; t < (int)distances.size(); ++t)
             {
                 if (distances[i][t] < LONG_LONG_MAX && distances[t][t] < 0 && distances[t][j] < LONG_LONG_MAX)
                     distances[i][j] = LONG_LONG_MIN;
@@ -610,7 +611,6 @@ vector<vector<int>> maxflow::max_flow(vector<vector<int>> graph, vector<vector<i
 {
 
     int u, v;
-    int nr_nodes = graph.size();
 
     // While thera are a path with available capacity
     vector<int> parent = bfs(graph, adj, s, t);
@@ -643,7 +643,7 @@ vector<vector<int>> maxflow::max_flow(vector<vector<int>> graph, vector<vector<i
 void mincut::dfs(vector<vector<int>> &r_graph, int s, vector<bool> &visited)
 {
     visited[s] = true;
-    for (int i = 0; i < r_graph.size(); i++)
+    for (int i = 0; i < (int)r_graph.size(); i++)
         if (r_graph[s][i] && !visited[i])
             dfs(r_graph, i, visited);
 }
@@ -667,4 +667,153 @@ vector<int> mincut::min_cut(vector<vector<int>> &graph, vector<vector<int>> &adj
     }
 
     return res;
+}
+
+vector<int> stringmatching::compute_prefix(string pattern)
+{
+    int m = pattern.length();
+    vector<int> prefix(m, 0);
+    int k = 0;
+
+    for (int q = 1; q < m; q++)
+    {
+        while (k > 0 && pattern[k] != pattern[q])
+        {
+            k = prefix[k - 1];
+        }
+
+        if (pattern[k] == pattern[q])
+        {
+            k += 1;
+        }
+
+        prefix[q] = k;
+    }
+    return prefix;
+}
+
+vector<int> stringmatching::find(string pattern, string text)
+{
+    int n = text.length();
+    int m = pattern.length();
+
+    vector<int> lps = compute_prefix(pattern);
+    vector<int> res;
+
+    int q = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        while (q > 0 && pattern[q] != text[i])
+        {
+            q = lps[q - 1];
+        }
+
+        if (pattern[q] == text[i])
+        {
+            q += 1;
+        }
+
+        if (q == m)
+        {
+            res.push_back(i - m + 1);
+            q = lps[q - 1];
+        }
+    }
+
+    return res;
+}
+
+rationalarithmetic::RationalNumber rationalarithmetic::RationalNumber::operator+(RationalNumber const &other)
+{
+    return RationalNumber(x * other.y + y * other.x, y * other.y);
+}
+
+rationalarithmetic::RationalNumber rationalarithmetic::RationalNumber::operator-(RationalNumber const &other)
+{
+    return RationalNumber(x * other.y - y * other.x, y * other.y);
+}
+
+rationalarithmetic::RationalNumber rationalarithmetic::RationalNumber::operator*(RationalNumber const &other)
+{
+    return RationalNumber(x * other.x, y * other.y);
+}
+
+rationalarithmetic::RationalNumber rationalarithmetic::RationalNumber::operator/(RationalNumber const &other)
+{
+    return RationalNumber(x * other.y, y * other.x);
+}
+
+bool rationalarithmetic::RationalNumber::operator<(RationalNumber const &other)
+{
+    return x * other.y < other.x * y;
+}
+
+bool rationalarithmetic::RationalNumber::operator>(RationalNumber const &other)
+{
+    return x * other.y > other.x * y;
+}
+
+bool rationalarithmetic::RationalNumber::operator<=(RationalNumber const &other)
+{
+    return x * other.y <= other.x * y;
+}
+
+bool rationalarithmetic::RationalNumber::operator>=(RationalNumber const &other)
+{
+    return x * other.y >= other.x * y;
+}
+
+bool rationalarithmetic::RationalNumber::operator==(RationalNumber const &other)
+{
+    return x * other.y == other.x * y;
+}
+
+bool rationalarithmetic::RationalNumber::operator!=(RationalNumber const &other)
+{
+    return x * other.y != other.x * y;
+}
+
+namespace rationalarithmetic
+{
+    ostream &operator<<(ostream &output, const RationalNumber &num)
+    {
+        output << num.x << " / " << num.y;
+        return output;
+    }
+
+    istream &operator>>(istream &input, RationalNumber &num)
+    {
+        input >> num.x >> num.y;
+        return input;
+    }
+}
+
+void rationalarithmetic::RationalNumber::reduce()
+{
+    // reduce numbers
+    long long d = gcd(x, y);
+    x = x / d;
+    y = y / d;
+
+    // adjust negative numbers
+    if (y < 0 && x < 0)
+    {
+        x = abs(x);
+        y = abs(y);
+    }
+    else if (y < 0)
+    {
+        x = -x;
+        y = -y;
+    }
+}
+
+long rationalarithmetic::gcd(long long a, long long b)
+{
+    if (a == 0)
+    {
+        return b;
+    }
+    return gcd(b % a, a);
 }
