@@ -817,3 +817,65 @@ long rationalarithmetic::gcd(long long a, long long b)
     }
     return gcd(b % a, a);
 }
+
+modulararithmetic::ModularNumber modulararithmetic::ModularNumber::operator+(long long const &y)
+{
+    return ModularNumber(x + y, mod);
+}
+
+modulararithmetic::ModularNumber modulararithmetic::ModularNumber::operator-(long long const &y)
+{
+    return ModularNumber(x - y, mod);
+}
+
+modulararithmetic::ModularNumber modulararithmetic::ModularNumber::operator*(long long const &y)
+{
+    return ModularNumber(x * y, mod);
+}
+
+modulararithmetic::ModularNumber modulararithmetic::ModularNumber::operator/(long long const &y)
+{
+    return ModularNumber(x * modular_inverse(y), mod);
+}
+
+long long modulararithmetic::ModularNumber::modular_inverse(long long a)
+{
+    int m = mod;
+    int y = 0, x0 = 1;
+
+    if (m == 1)
+        return 0;
+
+    while (a > 1)
+    {
+        // q is quotient
+        int q = a / m;
+        int t = m;
+
+        // m is remainder now
+        m = a % m, a = t;
+        t = y;
+
+        // Update y and x
+        y = x0 - q * y;
+        x0 = t;
+    }
+
+    // Make x positive
+    if (x0 < 0)
+        x0 += mod;
+
+    return x0;
+}
+
+void modulararithmetic::ModularNumber::simplify()
+{
+    if (x < 0)
+    {
+        x = (x % mod) + mod;
+    }
+    else
+    {
+        x = (x % mod);
+    }
+}

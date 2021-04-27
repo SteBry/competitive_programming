@@ -460,4 +460,51 @@ namespace rationalarithmetic
 
 }
 
+namespace modulararithmetic
+{
+
+    /**
+     * Implemetation of a modular number
+     **/
+    struct ModularNumber
+    {
+        long long x;
+        long long mod;
+
+        /**
+        * Construct a modular number
+        * 
+        * @param x the number
+        * @param mod the modular of the number
+        **/
+        ModularNumber(long long x, long long mod) : x{x}, mod{mod} { simplify(); };
+
+        /**
+        * Default constructor
+        **/
+        ModularNumber() : x{1}, mod{1} {};
+
+        // Arithmetic operators
+        ModularNumber operator+(long long const &y);
+        ModularNumber operator-(long long const &y);
+        ModularNumber operator*(long long const &y);
+        ModularNumber operator/(long long const &y);
+
+    private:
+        /**
+         * Simplify the number based on mod
+         **/
+        void simplify();
+
+        /**
+         * Calculate the modular inverse of a based on this.mod
+         * implementation based on: https://www.geeksforgeeks.org/multiplicative-inverse-under-modulo-m/
+         * 
+         * @param a The number to inverse
+         **/
+        long long modular_inverse(long long a);
+    };
+
+} // namespace modulararithmetic
+
 #endif /* MY_LIBRARY*/
