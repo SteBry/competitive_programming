@@ -13,6 +13,10 @@ using namespace std;
  * @date 01-03-2021
  *
  * Description: Given a graph, find the minimum spanning tree
+ * 
+ * Complexity:
+ * The solution has the time complexity O(V*log(E)) due to the fact that Kruskal's algorithm 
+ * were used together with the disjoint set union data structure 
  * */
 int main()
 {

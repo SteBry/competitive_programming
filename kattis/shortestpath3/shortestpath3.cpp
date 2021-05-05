@@ -14,6 +14,9 @@ using namespace std;
  *
  * Description: Find the shortest path to each node in a graph (given starting node)
  * where edges can have negaitve costs.
+ * 
+ * Complexity:
+ * The solution has the time complexity O(V*E) due to using the Bellman–Ford Algorithm
  **/
 int main()
 {

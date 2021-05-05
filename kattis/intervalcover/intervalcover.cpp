@@ -10,7 +10,8 @@ using namespace intervalcover;
  * @author Stefan Brynielsson(stebr364)
  * @date 02-02-2021
  * 
- * Problem description: Implement a function that given a set of intervals and a target
+ * Description:
+ *  Implement a function that given a set of intervals and a target
  * interval returns the smallest number of intervals required to cover the target interval
  * and the incexes of the intervals.
  * 
@@ -22,7 +23,11 @@ using namespace intervalcover;
  * an empty vector is returned if it is impossible to cover the target interval
  * 
  * The result is then output. 
- * */
+ * 
+ * Complexity:
+ * Each test case has the time complexity O(n*log(n)) due to the fact that the list of 
+ * intervals need to be sorted (done in O(n*log(n))).
+ **/
 
 int main()
 {

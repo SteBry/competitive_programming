@@ -18,7 +18,11 @@ struct FlowEdge
  * @date 03-03-2021
  *
  * Description: Given a graph find the maxflow and the edges used in it and output them
- * */
+ * 
+ * Complexity:
+ * The solution has the time complexity O(V*(E^2)) due to the fact that the Edmonds-Karp algorithm is 
+ * used to solve the problem.
+ **/
 int main()
 {
     ios::sync_with_stdio(false);

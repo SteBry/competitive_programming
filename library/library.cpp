@@ -549,7 +549,6 @@ vector<vector<long long>> allpairspath::shortest_path(shortestpath1::Graph &grap
 
 vector<minspantree::Edge> minspantree::mst(vector<minspantree::Edge> &edges, int nr_nodes)
 {
-
     unionfind::DSU dsu(nr_nodes);
     vector<Edge> result;
 

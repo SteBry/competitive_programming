@@ -11,13 +11,16 @@ using namespace std;
  * 
  * Problem description: Solve the classical knapsack problem
  * 
- * 
  * In the main function the input is read and saved to data structures.
  * 
  * The function "knapsack" calculates the indexes of the items that will be packed int the sack
  * 
  * The result is then output by the main function. 
- * */
+ * 
+ * Complexity:
+ * The time complexity is O(n·capacity) due to tabulation being used to determine if an 
+ * item should be used for each capacity (n*capacity).
+ **/
 int main()
 {
     ios::sync_with_stdio(false);

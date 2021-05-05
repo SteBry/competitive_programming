@@ -12,8 +12,14 @@ using namespace std;
  * @author Stefan Brynielsson(stebr364)
  * @date 03-03-2021
  *
+ * Discussion:
  * Given a flow graph, find the minimum cut and output it
- * */
+ *
+ * Complexity:
+ * The solution has the time complexity O(V*(E^2)) due to the solution to the maxflow problem being used 
+ * (implemented using the Edmonds-Karp algorithm).
+ *  
+ **/
 int main()
 {
     ios::sync_with_stdio(false);

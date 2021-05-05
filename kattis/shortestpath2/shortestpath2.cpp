@@ -13,6 +13,12 @@ using namespace std;
  *
  * Gives a graph with edges that only can be used during specified time intervals, calculate 
  * the cost from starting node to each one and aswer queries about it 
+ * 
+ * Complexity:
+ * The solution has the time complexity O(n^2) due to Dijkstra's algorithm for 
+ * shortest path being used.The complexity comes from the fact that for each 
+ * node the algorithm loops over all order to find the node closest to start 
+ * node not yet explored (n^2). 
  * */
 int main()
 {

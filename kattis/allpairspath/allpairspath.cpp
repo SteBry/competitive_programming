@@ -12,7 +12,12 @@ using namespace std;
  * @date 28-02-2021
  *
  * Description: Find the shortest path between each pair of nodes in a graph
- * */
+ * 
+ * Complexity:
+ * The solution has the complexity O(V^3) due to the fact that 
+ * Floyd-Warshalls algorithm is used to find the shortest paths.
+ * The algorithm uses 3 nested for-loops over the number of vertices O(V^3).
+ **/
 int main()
 {
     ios::sync_with_stdio(false);
